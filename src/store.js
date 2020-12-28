@@ -23,7 +23,7 @@ const getMiddleware = () => {
 };
 
 export const store = configureStore({
-	reducer: reducer,
+	reducer,
 	middleware: getMiddleware(),
 	devTools: true
 })
