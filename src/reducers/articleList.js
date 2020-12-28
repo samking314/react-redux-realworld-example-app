@@ -1,30 +1,5 @@
-import {
-  ARTICLE_FAVORITED,
-  ARTICLE_UNFAVORITED,
-  SET_PAGE,
-  APPLY_TAG_FILTER,
-  HOME_PAGE_LOADED,
-  HOME_PAGE_UNLOADED,
-  CHANGE_TAB,
-  PROFILE_PAGE_LOADED,
-  PROFILE_FAVORITES_PAGE_LOADED,
-} from '../constants/actionTypes';
-
-import { createAction, createReducer } from '@reduxjs/toolkit';
-
-const favorite = createAction(ARTICLE_FAVORITED);
-const unfavorite = createAction(ARTICLE_UNFAVORITED);
-
-const setpage = createAction(SET_PAGE);
-const applytagfilter = createAction(APPLY_TAG_FILTER);
-
-const loadhomepage = createAction(HOME_PAGE_LOADED);
-const unloadhomepage = createAction(HOME_PAGE_UNLOADED);
-
-const changetab = createAction(CHANGE_TAB);
-
-const profilepageloaded = createAction(PROFILE_PAGE_LOADED);
-const profilefavoritespageloaded = createAction(PROFILE_FAVORITES_PAGE_LOADED);
+import * as actions from './../actions';
+import { createReducer } from '@reduxjs/toolkit';
 
 const initialState = {
   pager: null,
@@ -57,14 +32,14 @@ const pageloadedcase = (state, action) => {
 
 export default createReducer(initialState, builder => {
   builder
-    .addCase(favorite, favoritecase)
-    .addCase(unfavorite, favoritecase)
-    .addCase(setpage, (state, action) => {
+    .addCase(actions.articlefavorited, favoritecase)
+    .addCase(actions.articleunfavorited, favoritecase)
+    .addCase(actions.setpage, (state, action) => {
       state.articles = action.payload.articles;
       state.articlesCount = action.payload.articlesCount;
       state.currentPage = action.page;
     })
-    .addCase(applytagfilter, (state, action) => {
+    .addCase(actions.applytagfilter, (state, action) => {
       state.pager = action.pager;
       state.articles = action.payload.articles;
       state.articlesCount = action.payload.articlesCount;
@@ -72,7 +47,7 @@ export default createReducer(initialState, builder => {
       state.tag = action.tag;
       state.currentPage = 0;
     })
-    .addCase(loadhomepage, (state, action) => {
+    .addCase(actions.homepageloaded, (state, action) => {
       state.pager = action.pager;
       state.tags = action.payload[0].tags;
       state.articles = action.payload[1].articles;
@@ -80,7 +55,7 @@ export default createReducer(initialState, builder => {
       state.currentPage = 0;
       state.tab = action.tab;
     })
-    .addCase(unloadhomepage, (state, action) => {
+    .addCase(actions.homepageunloaded, (state, action) => {
       state.pager = initialState.pager;
       state.tags = initialState.tags;
       state.articles = initialState.articles;
@@ -88,7 +63,7 @@ export default createReducer(initialState, builder => {
       state.currentPage = initialState.currentPage;
       state.tab = initialState.tab;
     })
-    .addCase(changetab, (state, action) => {
+    .addCase(actions.changetab, (state, action) => {
       state.pager = action.pager;
       state.articles = action.payload.articles;
       state.articlesCount = action.payload.articlesCount;
@@ -96,7 +71,7 @@ export default createReducer(initialState, builder => {
       state.currentPage = 0;
       state.tag = null;
     })
-    .addCase(profilepageloaded, pageloadedcase)
-    .addCase(profilefavoritespageloaded, pageloadedcase)
+    .addCase(actions.profilepageloaded, pageloadedcase)
+    .addCase(actions.profilefavoritespageloaded, pageloadedcase)
     .addDefaultCase((state, action) => {}) //handles PROFILE_PAGE_UNLOADED and PROFILE_FAVORITES_PAGE_UNLOADED
 })

@@ -1,24 +1,24 @@
-import {
-  PROFILE_PAGE_LOADED,
-  PROFILE_PAGE_UNLOADED,
-  FOLLOW_USER,
-  UNFOLLOW_USER
-} from '../constants/actionTypes';
+import * as actions from './../actions';
+import { createReducer } from '@reduxjs/toolkit';
 
-export default (state = {}, action) => {
-  switch (action.type) {
-    case PROFILE_PAGE_LOADED:
-      return {
-        ...action.payload[0].profile
-      };
-    case PROFILE_PAGE_UNLOADED:
-      return {};
-    case FOLLOW_USER:
-    case UNFOLLOW_USER:
-      return {
-        ...action.payload.profile
-      };
-    default:
-      return state;
-  }
+const initialState = {
+  username: null,
+  bio: null,
+  image: null,
+  following: null,
 };
+
+const updatestate = (profile, state) => {
+  state.username = profile.username;
+  state.bio = profile.bio;
+  state.image = profile.image;
+  state.following = profile.following;
+}
+
+export default createReducer(initialState, builder => {
+  builder
+    .addCase(actions.profilepageloaded, (state, action) => updatestate(action.payload[0].profile, state))
+    .addCase(actions.followuser, (state, action) => updatestate(action.payload.profile, state))
+    .addCase(actions.unfollowuser, (state, action) => updatestate(action.payload.profile, state))
+    .addDefaultCase((state, action) => {}) //handles PROFILE_PAGE_UNLOADED
+})

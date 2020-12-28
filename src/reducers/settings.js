@@ -1,25 +1,19 @@
-import {
-  SETTINGS_SAVED,
-  SETTINGS_PAGE_UNLOADED,
-  ASYNC_START
-} from '../constants/actionTypes';
+import * as actions from './../actions';
+import { createReducer } from '@reduxjs/toolkit';
 
-export default (state = {}, action) => {
-  switch (action.type) {
-    case SETTINGS_SAVED:
-      return {
-        ...state,
-        inProgress: false,
-        errors: action.error ? action.payload.errors : null
-      };
-    case SETTINGS_PAGE_UNLOADED:
-      return {};
-    case ASYNC_START:
-      return {
-        ...state,
-        inProgress: true
-      };
-    default:
-      return state;
-  }
+const initialState = {
+  inProgress: null,
+  errors: null,
 };
+
+export default createReducer(initialState, builder => {
+  builder
+    .addCase(actions.settingssaved, (state, action) => {
+      state.inProgress = false;
+      state.errors = action.error ? action.payload.errors : null;
+    })
+    .addCase(actions.asyncstart, (state, action) => {
+      state.inProgress = true;
+    })
+    .addDefaultCase((state, action) => {}) //handles SETTINGS_PAGE_UNLOADED
+});

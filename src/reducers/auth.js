@@ -1,34 +1,28 @@
-import {
-  LOGIN,
-  REGISTER,
-  LOGIN_PAGE_UNLOADED,
-  REGISTER_PAGE_UNLOADED,
-  ASYNC_START,
-  UPDATE_FIELD_AUTH
-} from '../constants/actionTypes';
+import { LOGIN, REGISTER } from './../constants/actionTypes.js';
+import * as actions from './../actions';
+import { createReducer } from '@reduxjs/toolkit';
 
-export default (state = {}, action) => {
-  switch (action.type) {
-    case LOGIN:
-    case REGISTER:
-      return {
-        ...state,
-        inProgress: false,
-        errors: action.error ? action.payload.errors : null
-      };
-    case LOGIN_PAGE_UNLOADED:
-    case REGISTER_PAGE_UNLOADED:
-      return {};
-    case ASYNC_START:
-      if (action.subtype === LOGIN || action.subtype === REGISTER) {
-        return { ...state, inProgress: true };
-      }
-      break;
-    case UPDATE_FIELD_AUTH:
-      return { ...state, [action.key]: action.value };
-    default:
-      return state;
-  }
-
-  return state;
+const initialState = {
+  inProgress: false,
+  errors: null,
 };
+
+const logincase = (state, action) => {
+  state.inProgress = false;
+  state.errors = action.error ? action.payload.errors : null;
+}
+
+export default createReducer(initialState, builder => {
+  builder
+    .addCase(actions.login, logincase)
+    .addCase(actions.register, logincase)
+    .addCase(actions.asyncstart, (state, action) => {
+      if (action.subtype === LOGIN || action.subtype === REGISTER) {
+        state.inProgress = true;
+      }
+    })
+    .addCase(actions.updatefieldauth, (state, action) => {
+      state[action.key] = action.value;
+    })
+    .addDefaultCase((state, action) => {}) //handles LOGIN_PAGE_UNLOADED and REGISTER_PAGE_UNLOADED
+})

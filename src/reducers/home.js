@@ -1,15 +1,14 @@
-import { HOME_PAGE_LOADED, HOME_PAGE_UNLOADED } from '../constants/actionTypes';
+import * as actions from './../actions';
+import { createReducer } from '@reduxjs/toolkit';
 
-export default (state = {}, action) => {
-  switch (action.type) {
-    case HOME_PAGE_LOADED:
-      return {
-        ...state,
-        tags: action.payload[0].tags
-      };
-    case HOME_PAGE_UNLOADED:
-      return {};
-    default:
-      return state;
-  }
+const initialState = {
+  tags: [],
 };
+
+export default createReducer(initialState, builder => {
+  builder
+    .addCase(actions.homepageloaded, (state, action) => {
+      state.tags = action.payload[0].tags;
+    })
+    .addDefaultCase((state, action) => {}) //handles HOME_PAGE_UNLOADED
+})

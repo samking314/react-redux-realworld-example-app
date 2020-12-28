@@ -49,6 +49,7 @@ class App extends React.Component {
   }
 
   render() {
+    console.log('APP NAMEEEEE',this.props.appName)
     if (this.props.appLoaded) {
       return (
         <div>

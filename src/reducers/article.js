@@ -1,35 +1,27 @@
-import {
-  ARTICLE_PAGE_LOADED,
-  ARTICLE_PAGE_UNLOADED,
-  ADD_COMMENT,
-  DELETE_COMMENT
-} from '../constants/actionTypes';
+import * as actions from './../actions';
+import { createReducer } from '@reduxjs/toolkit';
 
-export default (state = {}, action) => {
-  switch (action.type) {
-    case ARTICLE_PAGE_LOADED:
-      return {
-        ...state,
-        article: action.payload[0].article,
-        comments: action.payload[1].comments
-      };
-    case ARTICLE_PAGE_UNLOADED:
-      return {};
-    case ADD_COMMENT:
-      return {
-        ...state,
-        commentErrors: action.error ? action.payload.errors : null,
-        comments: action.error ?
-          null :
-          (state.comments || []).concat([action.payload.comment])
-      };
-    case DELETE_COMMENT:
-      const commentId = action.commentId
-      return {
-        ...state,
-        comments: state.comments.filter(comment => comment.id !== commentId)
-      };
-    default:
-      return state;
-  }
+const initialState = {
+  article: null,
+  commentErrors: null,
+  comments: [],
 };
+
+export default createReducer(initialState, builder => {
+  builder
+    .addCase(actions.articlepageloaded, (state, action) => {
+      state.article = action.payload[0].article;
+      state.comments = action.payload[1].comments;
+    })
+    .addCase(actions.addcomment, (state, action) => {
+      state.commentErrors = action.error ? action.payload.errors : null;
+      state.comments = action.error ?
+        null :
+        (state.comments || []).concat([action.payload.comment]);
+    })
+    .addCase(actions.deletecomment, (state, action) => {
+      const commentId = action.commentId;
+      state.comments = state.comments.filter(comment => comment.id !== commentId);
+    })
+    .addDefaultCase((state, action) => state) //handles ARTICLE_PAGE_UNLOADED
+})
