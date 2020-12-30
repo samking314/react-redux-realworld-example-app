@@ -4,12 +4,12 @@ import agent from '../agent';
 import { connect } from 'react-redux';
 import {
   editorpageloaded,
-  articlesubmitted,
   addtag,
   removetag,
   updatefieldeditor,
   unload
 } from './../reducers/editor';
+import { articlesubmitted } from './../reducers/common';
 
 const mapStateToProps = state => ({
   ...state.editor
