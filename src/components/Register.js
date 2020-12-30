@@ -4,26 +4,26 @@ import React from 'react';
 import agent from '../agent';
 import { connect } from 'react-redux';
 import {
-  UPDATE_FIELD_AUTH,
-  REGISTER,
-  REGISTER_PAGE_UNLOADED
-} from '../constants/actionTypes';
+  updatefieldauth,
+  register,
+  unload
+} from './../reducers/auth';
 
 const mapStateToProps = state => ({ ...state.auth });
 
 const mapDispatchToProps = dispatch => ({
   onChangeEmail: value =>
-    dispatch({ type: UPDATE_FIELD_AUTH, key: 'email', value }),
+    dispatch({ type: updatefieldauth.type, key: 'email', value }),
   onChangePassword: value =>
-    dispatch({ type: UPDATE_FIELD_AUTH, key: 'password', value }),
+    dispatch({ type: updatefieldauth.type, key: 'password', value }),
   onChangeUsername: value =>
-    dispatch({ type: UPDATE_FIELD_AUTH, key: 'username', value }),
+    dispatch({ type: updatefieldauth.type, key: 'username', value }),
   onSubmit: (username, email, password) => {
     const payload = agent.Auth.register(username, email, password);
-    dispatch({ type: REGISTER, payload })
+    dispatch({ type: register.type, payload })
   },
   onUnload: () =>
-    dispatch({ type: REGISTER_PAGE_UNLOADED })
+    dispatch({ type: unload.type })
 });
 
 class Register extends React.Component {

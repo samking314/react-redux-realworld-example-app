@@ -1,6 +1,9 @@
 #!/bin/bash
-input="./src/constants/actionTypes.js"
-output="./src/actions.index.js"
+
+input="./../constants/actionTypes.js"
+output="./../actions/index.js"
+
+# read action types and convert them into actions
 while read -r line || [[ -n "$line" ]]
 do
   var1=$(echo $line | cut -f2 -d\')

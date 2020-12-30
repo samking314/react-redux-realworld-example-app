@@ -4,11 +4,8 @@ import React from 'react';
 import Tags from './Tags';
 import agent from '../../agent';
 import { connect } from 'react-redux';
-import {
-  HOME_PAGE_LOADED,
-  HOME_PAGE_UNLOADED,
-  APPLY_TAG_FILTER
-} from '../../constants/actionTypes';
+import { applytagfilter } from './../../reducers/articleList';
+import { homepageloaded, unload } from './../../reducers/home';
 
 const Promise = global.Promise;
 
@@ -20,11 +17,11 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = dispatch => ({
   onClickTag: (tag, pager, payload) =>
-    dispatch({ type: APPLY_TAG_FILTER, tag, pager, payload }),
+    dispatch({ type: applytagfilter.type, tag, pager, payload }),
   onLoad: (tab, pager, payload) =>
-    dispatch({ type: HOME_PAGE_LOADED, tab, pager, payload }),
+    dispatch({ type: homepageloaded.type, tab, pager, payload }),
   onUnload: () =>
-    dispatch({  type: HOME_PAGE_UNLOADED })
+    dispatch({ type: unload.type })
 });
 
 class Home extends React.Component {

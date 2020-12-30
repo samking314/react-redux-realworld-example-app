@@ -1,6 +1,5 @@
 import { LOGIN, REGISTER } from './../constants/actionTypes.js';
-import * as actions from './../actions';
-import { createReducer } from '@reduxjs/toolkit';
+import { createSlice } from '@reduxjs/toolkit';
 
 const initialState = {
   inProgress: false,
@@ -12,17 +11,32 @@ const logincase = (state, action) => {
   state.errors = action.error ? action.payload.errors : null;
 }
 
-export default createReducer(initialState, builder => {
-  builder
-    .addCase(actions.login, logincase)
-    .addCase(actions.register, logincase)
-    .addCase(actions.asyncstart, (state, action) => {
+const authSlice = createSlice({
+  name: 'auth',
+  initialState,
+  reducers: {
+    login: logincase,
+    register: logincase,
+    asyncstart: (state, action) => {
       if (action.subtype === LOGIN || action.subtype === REGISTER) {
         state.inProgress = true;
       }
-    })
-    .addCase(actions.updatefieldauth, (state, action) => {
+    },
+    updatefieldauth: (state, action) => {
       state[action.key] = action.value;
-    })
-    .addDefaultCase((state, action) => {}) //handles LOGIN_PAGE_UNLOADED and REGISTER_PAGE_UNLOADED
+    },
+    unload: (state, action) => {}
+  }
 })
+
+export const {
+  login,
+  register,
+  asyncstart,
+  updatefieldauth,
+  unload
+} = authSlice.actions;
+
+export default authSlice.reducer;
+
+

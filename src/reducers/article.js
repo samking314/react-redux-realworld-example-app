@@ -1,5 +1,4 @@
-import * as actions from './../actions';
-import { createReducer } from '@reduxjs/toolkit';
+import { createSlice } from '@reduxjs/toolkit';
 
 const initialState = {
   article: null,
@@ -7,21 +6,33 @@ const initialState = {
   comments: [],
 };
 
-export default createReducer(initialState, builder => {
-  builder
-    .addCase(actions.articlepageloaded, (state, action) => {
+const articleSlice = createSlice({
+  name: 'article',
+  initialState,
+  reducers: {
+    articlepageloaded: (state, action) => {
       state.article = action.payload[0].article;
       state.comments = action.payload[1].comments;
-    })
-    .addCase(actions.addcomment, (state, action) => {
+    },
+    addcomment: (state, action) => {
       state.commentErrors = action.error ? action.payload.errors : null;
       state.comments = action.error ?
         null :
         (state.comments || []).concat([action.payload.comment]);
-    })
-    .addCase(actions.deletecomment, (state, action) => {
+    },
+    deletecomment: (state, action) => {
       const commentId = action.commentId;
       state.comments = state.comments.filter(comment => comment.id !== commentId);
-    })
-    .addDefaultCase((state, action) => state) //handles ARTICLE_PAGE_UNLOADED
+    },
+    unload: (state, action) => {}
+  }
 })
+
+export const {
+  articlepageloaded,
+  addcomment,
+  deletecomment,
+  unload
+} = articleSlice.actions;
+
+export default articleSlice.reducer;

@@ -2,19 +2,20 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import agent from '../agent';
 import { connect } from 'react-redux';
-import { createAction } from '@reduxjs/toolkit';
-import { ARTICLE_FAVORITED, ARTICLE_UNFAVORITED } from '../constants/actionTypes';
-
+import {
+  articlefavorited,
+  articleunfavorited
+} from './../reducers/articleList';
 const FAVORITED_CLASS = 'btn btn-sm btn-primary';
 const NOT_FAVORITED_CLASS = 'btn btn-sm btn-outline-primary';
 
 const mapDispatchToProps = dispatch => ({
   favorite: slug => dispatch({
-    type: ARTICLE_FAVORITED,
+    type: articlefavorited.type,
     payload: agent.Articles.favorite(slug)
   }),
   unfavorite: slug => dispatch({
-    type: ARTICLE_UNFAVORITED,
+    type: articleunfavorited.type,
     payload: agent.Articles.unfavorite(slug)
   })
 });

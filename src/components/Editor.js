@@ -3,13 +3,13 @@ import React from 'react';
 import agent from '../agent';
 import { connect } from 'react-redux';
 import {
-  ADD_TAG,
-  EDITOR_PAGE_LOADED,
-  REMOVE_TAG,
-  ARTICLE_SUBMITTED,
-  EDITOR_PAGE_UNLOADED,
-  UPDATE_FIELD_EDITOR
-} from '../constants/actionTypes';
+  editorpageloaded,
+  articlesubmitted,
+  addtag,
+  removetag,
+  updatefieldeditor,
+  unload
+} from './../reducers/editor';
 
 const mapStateToProps = state => ({
   ...state.editor
@@ -17,17 +17,17 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = dispatch => ({
   onAddTag: () =>
-    dispatch({ type: ADD_TAG }),
+    dispatch({ type: addtag.type }),
   onLoad: payload =>
-    dispatch({ type: EDITOR_PAGE_LOADED, payload }),
+    dispatch({ type: editorpageloaded.type, payload }),
   onRemoveTag: tag =>
-    dispatch({ type: REMOVE_TAG, tag }),
+    dispatch({ type: removetag.type, tag }),
   onSubmit: payload =>
-    dispatch({ type: ARTICLE_SUBMITTED, payload }),
+    dispatch({ type: articlesubmitted.type, payload }),
   onUnload: payload =>
-    dispatch({ type: EDITOR_PAGE_UNLOADED }),
+    dispatch({ type: unload.type }),
   onUpdateField: (key, value) =>
-    dispatch({ type: UPDATE_FIELD_EDITOR, key, value })
+    dispatch({ type: updatefieldeditor.type, key, value })
 });
 
 class Editor extends React.Component {

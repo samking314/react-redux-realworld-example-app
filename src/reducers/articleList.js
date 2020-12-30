@@ -1,5 +1,4 @@
-import * as actions from './../actions';
-import { createReducer } from '@reduxjs/toolkit';
+import { createSlice } from '@reduxjs/toolkit';
 
 const initialState = {
   pager: null,
@@ -30,48 +29,69 @@ const pageloadedcase = (state, action) => {
   state.currentPage = 0;
 }
 
-export default createReducer(initialState, builder => {
-  builder
-    .addCase(actions.articlefavorited, favoritecase)
-    .addCase(actions.articleunfavorited, favoritecase)
-    .addCase(actions.setpage, (state, action) => {
+const articleListSlice = createSlice({
+  name: 'articlelist',
+  initialState,
+  reducers: {
+    articlefavorited: favoritecase,
+    articleunfavorited: favoritecase,
+    setpage: (state, action) => {
       state.articles = action.payload.articles;
       state.articlesCount = action.payload.articlesCount;
       state.currentPage = action.page;
-    })
-    .addCase(actions.applytagfilter, (state, action) => {
+    },
+    applytagfilter: (state, action) => {
       state.pager = action.pager;
       state.articles = action.payload.articles;
       state.articlesCount = action.payload.articlesCount;
       state.tab = null;
       state.tag = action.tag;
       state.currentPage = 0;
-    })
-    .addCase(actions.homepageloaded, (state, action) => {
+    },
+    homepageloaded: (state, action) => {
       state.pager = action.pager;
       state.tags = action.payload[0].tags;
       state.articles = action.payload[1].articles;
       state.articlesCount = action.payload[1].articlesCount;
       state.currentPage = 0;
       state.tab = action.tab;
-    })
-    .addCase(actions.homepageunloaded, (state, action) => {
+    },
+    homepageunloaded: (state, action) => {
       state.pager = initialState.pager;
       state.tags = initialState.tags;
       state.articles = initialState.articles;
       state.articlesCount = initialState.articlesCount;
       state.currentPage = initialState.currentPage;
       state.tab = initialState.tab;
-    })
-    .addCase(actions.changetab, (state, action) => {
+    },
+    changetab: (state, action) => {
       state.pager = action.pager;
       state.articles = action.payload.articles;
       state.articlesCount = action.payload.articlesCount;
       state.tab = action.tab;
       state.currentPage = 0;
       state.tag = null;
-    })
-    .addCase(actions.profilepageloaded, pageloadedcase)
-    .addCase(actions.profilefavoritespageloaded, pageloadedcase)
-    .addDefaultCase((state, action) => {}) //handles PROFILE_PAGE_UNLOADED and PROFILE_FAVORITES_PAGE_UNLOADED
+    },
+    profilepageloaded: pageloadedcase,
+    profilefavoritespageloaded: pageloadedcase,
+    unload: (state, action) => {}
+  }
 })
+
+export const {
+  articlefavorited,
+  articleunfavorited,
+  setpage,
+  applytagfilter,
+  homepageloaded,
+  homepageunloaded,
+  changetab,
+  profilepageloaded,
+  profilefavoritespageloaded,
+  unload,
+} = articleListSlice.actions;
+
+export default articleListSlice.reducer;
+
+
+

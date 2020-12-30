@@ -4,7 +4,10 @@ import React from 'react';
 import agent from '../../agent';
 import { connect } from 'react-redux';
 import marked from 'marked';
-import { ARTICLE_PAGE_LOADED, ARTICLE_PAGE_UNLOADED } from '../../constants/actionTypes';
+import {
+  articlepageloaded,
+  unload
+} from './../../reducers/article';
 
 const mapStateToProps = state => ({
   ...state.article,
@@ -13,9 +16,9 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = dispatch => ({
   onLoad: payload =>
-    dispatch({ type: ARTICLE_PAGE_LOADED, payload }),
+    dispatch({ type: articlepageloaded.type, payload }),
   onUnload: () =>
-    dispatch({ type: ARTICLE_PAGE_UNLOADED })
+    dispatch({ type: unload.type })
 });
 
 class Article extends React.Component {

@@ -1,5 +1,4 @@
-import * as actions from './../actions';
-import { createReducer } from '@reduxjs/toolkit';
+import { createSlice } from '@reduxjs/toolkit';
 
 const initialState = {
   username: null,
@@ -15,10 +14,18 @@ const updatestate = (profile, state) => {
   state.following = profile.following;
 }
 
-export default createReducer(initialState, builder => {
-  builder
-    .addCase(actions.profilepageloaded, (state, action) => updatestate(action.payload[0].profile, state))
-    .addCase(actions.followuser, (state, action) => updatestate(action.payload.profile, state))
-    .addCase(actions.unfollowuser, (state, action) => updatestate(action.payload.profile, state))
-    .addDefaultCase((state, action) => {}) //handles PROFILE_PAGE_UNLOADED
+const profileSlice = createSlice({
+  name: 'profile',
+  initialState,
+  reducers: {
+    profilepageloaded: (state, action) => updatestate(action.payload[0].profile, state),
+    followuser: (state, action) => updatestate(action.payload.profile, state),
+    unfollowuser: (state, action) => updatestate(action.payload.profile, state),
+    unload: (state, action) => {}
+  }
 })
+
+export const { profilepageloaded, followuser, unfollowuser, unload } = profileSlice.actions;
+
+export default profileSlice.reducer;
+

@@ -2,7 +2,7 @@ import ArticleList from '../ArticleList';
 import React from 'react';
 import agent from '../../agent';
 import { connect } from 'react-redux';
-import { CHANGE_TAB } from '../../constants/actionTypes';
+import { changetab } from './../../reducers/articleList';
 
 const YourFeedTab = props => {
   if (props.token) {
@@ -62,7 +62,7 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = dispatch => ({
-  onTabClick: (tab, pager, payload) => dispatch({ type: CHANGE_TAB, tab, pager, payload })
+  onTabClick: (tab, pager, payload) => dispatch({ type: changetab.type, tab, pager, payload })
 });
 
 const MainView = props => {

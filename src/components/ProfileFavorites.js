@@ -3,16 +3,14 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import agent from '../agent';
 import { connect } from 'react-redux';
-import {
-  PROFILE_PAGE_LOADED,
-  PROFILE_PAGE_UNLOADED
-} from '../constants/actionTypes';
+import { profilepageloaded } from './../reducers/profile';
+import { profilepageunloaded } from './../reducers/common';
 
 const mapDispatchToProps = dispatch => ({
   onLoad: (pager, payload) =>
-    dispatch({ type: PROFILE_PAGE_LOADED, pager, payload }),
+    dispatch({ type: profilepageloaded.type, pager, payload }),
   onUnload: () =>
-    dispatch({ type: PROFILE_PAGE_UNLOADED })
+    dispatch({ type: profilepageunloaded.type })
 });
 
 class ProfileFavorites extends Profile {
